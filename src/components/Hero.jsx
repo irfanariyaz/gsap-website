@@ -11,7 +11,7 @@ const Hero = () => {
     const isMobile = useMediaQuery({ maxWidth: 767 });
 
     useGSAP(()=>{
-        const heroSplit = new SplitText('.title',{type:'chars, words'});
+        const heroSplit = new SplitText('.title',{type:"chars, words"});
         const paragraphSplit = new SplitText('.subtitle',{type:'lines'});
 
         heroSplit.chars.forEach((char) =>char.classList.add('text-gradient'));
@@ -20,7 +20,8 @@ const Hero = () => {
             stagger:0.05,            
             duration:1.8,
             ease:'expo.out',
-        })
+        });
+
         gsap.from(paragraphSplit.lines, {
             opacity: 0,
             yPercent:100,
@@ -36,7 +37,7 @@ const Hero = () => {
                 start:'top top',
                 end:'bottom top',
                 scrub:true,//animation directly related to scroll
-            }
+            },
         })
         //.to('.left-leaf', {xPercent:-20, rotate:-20},0)
         .to('.left-leaf', {y:-200},0)
@@ -54,12 +55,12 @@ const Hero = () => {
                 end: endValue,
                 scrub:true,
                 pin:true,
-    }})
+    },});
          videoRef.current.onloadedmetadata = () => {
             tl.to(videoRef.current, {
                 currentTime: videoRef.current.duration,
-            })
-        }
+            });
+        };
     },[])
   return (
   <>
@@ -99,14 +100,13 @@ Every cocktail on our menu is a blend of premium ingredients, creative flair, an
     <video ref={videoRef}
      src="/videos/output.mp4"
       muted  
-      loop
       playsInline 
       preload='auto'>
 
      </video>
   </div>
   </>
-  )
-}
+  );
+};
 
 export default Hero
