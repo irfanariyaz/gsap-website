@@ -1,10 +1,14 @@
 import { gsap } from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { SplitText } from 'gsap/all'
-import React from 'react'
+import React, { useRef } from 'react'
+import { useMediaQuery } from 'react-responsive'
 
 
 const Hero = () => {
+    const videoRef = useRef();
+
+    const isMobile = useMediaQuery({ maxWidth: 767 });
 
     useGSAP(()=>{
         const heroSplit = new SplitText('.title',{type:'chars, words'});
@@ -38,6 +42,24 @@ const Hero = () => {
         .to('.left-leaf', {y:-200},0)
       //  .to('.left-leaf', {xPercent:-20, rotate:-20},0)
         .to('.right-leaf', {y:200},0)
+
+        const startValue =isMobile? 'top 50% ':'center 60%';//first property is element we are animating and second one viewport
+        const endValue = isMobile ? '120% top' : 'bottom top';
+        //video animation timeline
+        //create the timeline witha a default duration
+        const tl  = gsap.timeline({
+            scrollTrigger:{
+                trigger: 'video',
+                start: startValue,
+                end: endValue,
+                scrub:true,
+                pin:true,
+    }})
+         videoRef.current.onloadedmetadata = () => {
+            tl.to(videoRef.current, {
+                currentTime: videoRef.current.duration,
+            })
+        }
     },[])
   return (
   <>
@@ -73,6 +95,16 @@ Every cocktail on our menu is a blend of premium ingredients, creative flair, an
     </div>
 
   </section>
+  <div className="video absolute inset-0">
+    <video ref={videoRef}
+     src="/videos/output.mp4"
+      muted  
+      loop
+      playsInline 
+      preload='auto'>
+
+     </video>
+  </div>
   </>
   )
 }
